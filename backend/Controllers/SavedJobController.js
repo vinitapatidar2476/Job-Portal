@@ -4,8 +4,7 @@ const saveJob = async (req, res) => {
   try {
     const userId = req.user.id;
     const jobId = req.body.jobId;
-    console.log("✅ saveJob API hit", req.body);
-    console.log("✅ saveJob API hit", req.body.jobId);
+
     const alreadySaved = await SavedJob.findOne({ user: userId, job: jobId });
     if (alreadySaved) {
       return res.status(400).json({ message: "Job already saved" });

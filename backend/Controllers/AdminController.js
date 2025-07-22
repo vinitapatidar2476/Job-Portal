@@ -62,7 +62,7 @@ const approveJob = async (req, res) => {
       .json({ message: "Error approving job", error: err.message });
   }
 };
-// Delete job
+
 const deleteJob = async (req, res) => {
   try {
     const jobId = req.params.id;

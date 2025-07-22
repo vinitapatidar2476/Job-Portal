@@ -19,7 +19,6 @@ exports.getJobs = async (req, res) => {
   }
 };
 
-// Add inside JobController.js (temporary)
 exports.addJob = async (req, res) => {
   try {
     const job = new Job(req.body);

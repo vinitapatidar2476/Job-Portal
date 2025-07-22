@@ -81,7 +81,6 @@ export const Home = () => {
             </Col>
           </Row>
 
-          {/* Feature Highlights */}
           <Row className="mt-5 text-center">
             {[
               { title: "1000+ Jobs", desc: "Wide range of industries" },
