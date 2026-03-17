@@ -34,7 +34,7 @@ export const AdminJobs = () => {
               <th>#</th>
               <th>Title</th>
               <th>Company</th>
-              <th> Job Type</th>
+
               <th>Location</th>
               <th>Posted On</th>
             </tr>
@@ -45,7 +45,7 @@ export const AdminJobs = () => {
                 <td>{index + 1}</td>
                 <td>{job.title}</td>
                 <td>{job.company}</td>
-                <td>{job.jobType}</td>
+
                 <td>{job.location}</td>
                 <td>{new Date(job.createdAt).toLocaleDateString()}</td>
               </tr>

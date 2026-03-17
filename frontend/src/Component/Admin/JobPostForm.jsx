@@ -10,7 +10,6 @@ const JobPostForm = () => {
     salary: "",
     description: "",
   });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setJob((prevState) => ({

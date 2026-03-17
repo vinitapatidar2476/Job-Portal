@@ -20,6 +20,7 @@ export const AdminLogin = () => {
         { headers: { "Content-Type": "application/json" } }
       );
       localStorage.setItem("secret-12345", res.data.token);
+      console.log(res.data.token);
       alert("Login successful");
       navigate("/adminLayout");
     } catch (err) {

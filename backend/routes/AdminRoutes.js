@@ -14,6 +14,7 @@ const Job = require("../models/job");
 const Application = require("../models/Application");
 const User = require("../models/User");
 const adminMiddleware = require("../middleware/authMiddleware");
+
 router.post("/login", adminLogin);
 router.get("/jobs", getAllJobs);
 router.put("/jobs/:id/approve", approveJob);

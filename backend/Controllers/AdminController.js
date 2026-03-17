@@ -7,7 +7,8 @@ const User = require("../models/User");
 
 const adminLogin = async (req, res) => {
   const { email, password } = req.body;
-
+  console.log("Email from frontend:", email);
+  console.log("Password from frontend:", password);
   try {
     const admin = await Admin.findOne({ email });
 
