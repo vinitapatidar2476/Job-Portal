@@ -32,8 +32,7 @@ lerna-debug.log*
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
+*.slns
 *.sw?
 *.local
-/frontend/src/assets/J - Logo_files/
-frontend/src/assets/J - Logo.html
+

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://job-portal-1-gl2w.onrender.com",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
