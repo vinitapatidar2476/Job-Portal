@@ -16,12 +16,12 @@ export const Login = () => {
     setLoading(true);
     try {
       const { data } = await API.post("/auth/login", { email, password });
-      
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      
+
       toast.success("Login successful!");
-      
+
       setTimeout(() => {
         navigate("/");
       }, 1000);

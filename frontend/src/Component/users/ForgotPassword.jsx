@@ -39,36 +39,36 @@ export const ForgotPassword = () => {
             </div>
 
             {sent ? (
-                <div className="text-center py-4">
-                    <div className="alert alert-success rounded-4 fw-bold">Check your inbox! We've sent a recovery link.</div>
-                    <Link to="/login" className="btn btn-primary w-100 py-3 mt-4 rounded-pill">Back to Login</Link>
-                </div>
+              <div className="text-center py-4">
+                <div className="alert alert-success rounded-4 fw-bold">Check your inbox! We've sent a recovery link.</div>
+                <Link to="/login" className="btn btn-primary w-100 py-3 mt-4 rounded-pill">Back to Login</Link>
+              </div>
             ) : (
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="form-label fw-bold text-dark mb-2">Email Address</label>
-                        <div className="input-group">
-                        <span className="input-group-text bg-white border-end-0 rounded-start-3 p-3">
-                            <Mail size={18} className="text-primary" />
-                        </span>
-                        <input
-                            type="email"
-                            className="form-control border-start-0 rounded-end-3 p-3"
-                            placeholder="name@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        </div>
-                    </div>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                  <label className="form-label fw-bold text-dark mb-2">Email Address</label>
+                  <div className="input-group">
+                    <span className="input-group-text bg-white border-end-0 rounded-start-3 p-3">
+                      <Mail size={18} className="text-primary" />
+                    </span>
+                    <input
+                      type="email"
+                      className="form-control border-start-0 rounded-end-3 p-3"
+                      placeholder="name@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
 
-                    <button type="submit" className="btn btn-premium w-100 py-3 shadow-lg d-flex align-items-center justify-content-center gap-2" disabled={loading}>
-                        {loading ? "Sending..." : "Send Reset Link"} <ChevronRight size={18} />
-                    </button>
-                    <div className="text-center mt-4">
-                         <Link to="/login" className="text-muted text-decoration-none small fw-bold">Nevermind, take me back</Link>
-                    </div>
-                </form>
+                <button type="submit" className="btn btn-premium w-100 py-3 shadow-lg d-flex align-items-center justify-content-center gap-2" disabled={loading}>
+                  {loading ? "Sending..." : "Send Reset Link"} <ChevronRight size={18} />
+                </button>
+                <div className="text-center mt-4">
+                  <Link to="/login" className="text-muted text-decoration-none small fw-bold">Nevermind, take me back</Link>
+                </div>
+              </form>
             )}
           </div>
         </div>

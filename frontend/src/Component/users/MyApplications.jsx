@@ -47,7 +47,7 @@ export const MyApplications = () => {
                             <div key={app._id} className="col-lg-10 mx-auto">
                                 <div className="premium-card p-4 d-md-flex align-items-center justify-content-between gap-4">
                                     <div className="d-flex align-items-center gap-4 flex-grow-1">
-                                        <div className="bg-primary-subtle p-3 rounded-4 d-flex align-items-center justify-content-center" style={{width: 60, height: 60}}>
+                                        <div className="bg-primary-subtle p-3 rounded-4 d-flex align-items-center justify-content-center" style={{ width: 60, height: 60 }}>
                                             <Briefcase className="text-primary" size={28} />
                                         </div>
                                         <div className="flex-grow-1">
@@ -57,14 +57,14 @@ export const MyApplications = () => {
                                             </div>
                                             <p className="text-dark fw-bold mb-2 small"><Building className="text-primary me-2" size={14} />{app.jobId?.company}</p>
                                             <div className="d-flex flex-wrap align-items-center gap-4 text-muted small mt-3">
-                                                <span className="d-inline-flex align-items-center gap-1 fw-bold"><MapPin size={14} className="text-primary"/> {app.jobId?.location}</span>
-                                                <span className="d-inline-flex align-items-center gap-1 fw-bold"><Clock size={14} className="text-primary"/> Applied on {new Date(app.appliedAt).toLocaleDateString()}</span>
+                                                <span className="d-inline-flex align-items-center gap-1 fw-bold"><MapPin size={14} className="text-primary" /> {app.jobId?.location}</span>
+                                                <span className="d-inline-flex align-items-center gap-1 fw-bold"><Clock size={14} className="text-primary" /> Applied on {new Date(app.appliedAt).toLocaleDateString()}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="mt-4 mt-md-0 d-flex flex-column gap-2">
-                                        <a href={`http://localhost:5000/${app.resume?.replace(/\\/g, '/')}`} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2"><FileText size={16}/> View Resume</a>
-                                        <button className="btn btn-light rounded-3 fw-bold border-0 d-flex align-items-center justify-content-center gap-2 text-muted" title="View Job Details"><ExternalLink size={16}/> Details</button>
+                                        <a href={`http://localhost:5000/${app.resume?.replace(/\\/g, '/')}`} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary rounded-3 fw-bold d-flex align-items-center justify-content-center gap-2"><FileText size={16} /> View Resume</a>
+                                        <button className="btn btn-light rounded-3 fw-bold border-0 d-flex align-items-center justify-content-center gap-2 text-muted" title="View Job Details"><ExternalLink size={16} /> Details</button>
                                     </div>
                                 </div>
                             </div>

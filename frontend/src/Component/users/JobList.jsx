@@ -41,12 +41,12 @@ export const JobList = () => {
     const userData = localStorage.getItem("user");
     const user = userData && userData !== "undefined" ? JSON.parse(userData) : null;
     if (!user) {
-        toast.warning("Please login to apply");
-        return;
+      toast.warning("Please login to apply");
+      return;
     }
     if (user.role !== 'seeker') {
-        toast.error("Only Job Seekers can apply!");
-        return;
+      toast.error("Only Job Seekers can apply!");
+      return;
     }
     setSelectedJob(job);
     setShowModal(true);
@@ -59,10 +59,10 @@ export const JobList = () => {
     if (user.role !== 'seeker') return toast.error("Only seekers can save jobs");
 
     try {
-        await API.post("/saved-jobs/save", { jobId });
-        toast.success("Job saved successfully!");
+      await API.post("/saved-jobs/save", { jobId });
+      toast.success("Job saved successfully!");
     } catch (error) {
-        toast.error(error.response?.data?.message || "Failed to save job");
+      toast.error(error.response?.data?.message || "Failed to save job");
     }
   };
 
@@ -78,23 +78,23 @@ export const JobList = () => {
                 <div className="col-lg-4">
                   <div className="input-group border-0 bg-transparent">
                     <span className="input-group-text border-0 bg-transparent ps-3"><Search size={20} className="text-primary" /></span>
-                    <input type="text" className="form-control border-0 bg-transparent shadow-none" placeholder="Job title or company..." value={filters.keyword} onChange={(e) => setFilters({...filters, keyword: e.target.value})} />
+                    <input type="text" className="form-control border-0 bg-transparent shadow-none" placeholder="Job title or company..." value={filters.keyword} onChange={(e) => setFilters({ ...filters, keyword: e.target.value })} />
                   </div>
                 </div>
                 <div className="col-lg-3 border-start border-light d-none d-lg-block">
                   <div className="input-group border-0 bg-transparent">
                     <span className="input-group-text border-0 bg-transparent"><MapPin size={20} className="text-primary" /></span>
-                    <input type="text" className="form-control border-0 bg-transparent shadow-none" placeholder="Location..." value={filters.location} onChange={(e) => setFilters({...filters, location: e.target.value})} />
+                    <input type="text" className="form-control border-0 bg-transparent shadow-none" placeholder="Location..." value={filters.location} onChange={(e) => setFilters({ ...filters, location: e.target.value })} />
                   </div>
                 </div>
                 <div className="col-lg-3 d-none d-lg-block border-start border-light">
-                   <select className="form-select border-0 bg-transparent shadow-none fw-semibold" value={filters.category} onChange={(e) => setFilters({...filters, category: e.target.value})}>
-                        <option value="">All Categories</option>
-                        <option value="Technology">Technology</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Design">Design</option>
-                        <option value="Finance">Finance</option>
-                   </select>
+                  <select className="form-select border-0 bg-transparent shadow-none fw-semibold" value={filters.category} onChange={(e) => setFilters({ ...filters, category: e.target.value })}>
+                    <option value="">All Categories</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Design">Design</option>
+                    <option value="Finance">Finance</option>
+                  </select>
                 </div>
                 <div className="col-lg-2">
                   <button className="btn btn-premium w-100 rounded-pill py-3 fw-bold" onClick={fetchJobs}>Search</button>
@@ -106,11 +106,11 @@ export const JobList = () => {
 
         <div className="row g-4">
           <div className="col-lg-3 d-none d-lg-block">
-            <div className="premium-card p-4 sticky-top" style={{top: 100}}>
+            <div className="premium-card p-4 sticky-top" style={{ top: 100 }}>
               <h5 className="fw-bold mb-4 d-flex align-items-center gap-2"><Filter size={18} /> Advanced Filters</h5>
               <div className="mb-4">
                 <label className="form-label fw-bold text-muted small text-uppercase">Job Type</label>
-                <select className="form-select rounded-3 border-light bg-light" value={filters.jobType} onChange={(e) => setFilters({...filters, jobType: e.target.value})}>
+                <select className="form-select rounded-3 border-light bg-light" value={filters.jobType} onChange={(e) => setFilters({ ...filters, jobType: e.target.value })}>
                   <option value="">Full Time & Part Time</option>
                   <option value="Full-time">Full-time</option>
                   <option value="Part-time">Part-time</option>
@@ -120,14 +120,14 @@ export const JobList = () => {
               </div>
               <div className="mb-4">
                 <label className="form-label fw-bold text-muted small text-uppercase">Experience Level</label>
-                <select className="form-select rounded-3 border-light bg-light" value={filters.experience} onChange={(e) => setFilters({...filters, experience: e.target.value})}>
+                <select className="form-select rounded-3 border-light bg-light" value={filters.experience} onChange={(e) => setFilters({ ...filters, experience: e.target.value })}>
                   <option value="">Any Experience</option>
                   <option value="Entry Level">Entry Level</option>
                   <option value="Mid Level">Mid Level</option>
                   <option value="Senior Level">Senior Level</option>
                 </select>
               </div>
-              <button className="btn btn-outline-danger w-100 rounded-3" onClick={() => setFilters({keyword: "", location: "", category: "", experience: "", jobType: "", page: 1})}>Clear Filters</button>
+              <button className="btn btn-outline-danger w-100 rounded-3" onClick={() => setFilters({ keyword: "", location: "", category: "", experience: "", jobType: "", page: 1 })}>Clear Filters</button>
             </div>
           </div>
 
@@ -140,7 +140,7 @@ export const JobList = () => {
                   <div key={job._id} className="col-12">
                     <div className="premium-card p-4 d-md-flex align-items-center justify-content-between gap-4">
                       <div className="d-flex align-items-center gap-4">
-                        <div className="bg-light p-3 rounded-4 d-flex align-items-center justify-content-center" style={{width: 70, height: 70}}>
+                        <div className="bg-light p-3 rounded-4 d-flex align-items-center justify-content-center" style={{ width: 70, height: 70 }}>
                           <Building className="text-primary" size={32} />
                         </div>
                         <div>
@@ -167,7 +167,7 @@ export const JobList = () => {
             ) : (
               <div className="text-center py-5 premium-card bg-white"><p className="text-muted fs-5">No jobs found matching your criteria.</p></div>
             )}
-            
+
             {showModal && <ApplicationModal job={selectedJob} onClose={() => setShowModal(false)} />}
           </div>
         </div>
