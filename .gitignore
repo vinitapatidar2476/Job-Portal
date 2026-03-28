@@ -36,3 +36,4 @@ lerna-debug.log*
 *.sw?
 *.local
 /frontend/src/assets/J - Logo_files/
+frontend/src/assets/J - Logo.html

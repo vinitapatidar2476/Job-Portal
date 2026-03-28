@@ -1,65 +1,47 @@
-import { useState } from "react";
+import React from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import { JobList } from "./Component/users/JobList";
 import { Login } from "./Component/users/Login";
 import { Register } from "./Component/users/Register";
-
 import { Home } from "./Component/Home";
-
-import JobPostForm from "./Component/Admin/JobPostForm";
-import MyApplications from "./Component/users/MyApplications";
-import AdminLayout from "./Component/Admin/AdminLayout";
-import { UserLoginLayout } from "./Component/users/UserLoginLayout";
-import { Footer } from "./Footer";
+import { MyApplications } from "./Component/users/MyApplications";
 import { AdminDashboard } from "./Component/Admin/AdminDashboard";
-import { AdminUsers } from "./Component/Admin/AdminUsers";
-import { AdminManageJobs } from "./Component/Admin/AdminManageJobs";
-import { AdminApplication } from "./Component/Admin/AdminApplication";
-import { AdminLogin } from "./Component/Admin/AdminLogin";
+import { EmployerDashboard } from "./Component/Employer/EmployerDashboard";
+import { NavBar } from "./Component/NavBar";
+import ProtectedRoute from "./Component/ProtectedRoute";
 import SavedJobs from "./Component/users/SavedJobs";
-import { UserLogout } from "./Component/users/userLogout";
-import { AdminLogout } from "./Component/Admin/AdminLogout";
-import { AdminJobs } from "./Component/Admin/AdminJobs";
+import { Footer } from "./Component/Footer";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/adminLayout" element={<AdminLayout />}>
-          <Route
-            path="/adminLayout/adminDashboard"
-            element={<AdminDashboard />}
-          />
-          <Route path="/adminLayout/adminJobs" element={<AdminJobs />} />
-          <Route
-            path="/adminLayout/adminManageJobs"
-            element={<AdminManageJobs />}
-          />
-          <Route path="/adminLayout/adminUsers" element={<AdminUsers />} />
-          <Route path="/adminLayout/postJob" element={<JobPostForm />} />
-          <Route
-            path="/adminLayout/adminApplications"
-            element={<AdminApplication />}
-          />
-          <Route path="/adminLayout/adminLogout" element={<AdminLogout />} />
-        </Route>
-        <Route path="/userLoginLayout" element={<UserLoginLayout />}>
-          <Route path="/userLoginLayout/jobList" element={<JobList />} />
-          <Route path="/userLoginLayout/saved-jobs" element={<SavedJobs />} />
-
-          <Route
-            path="/userLoginLayout/myApplication"
-            element={<MyApplications />}
-          />
-          <Route path="/userLoginLayout/userLogout" element={<UserLogout />} />
-        </Route>
-        <Route path="/" element={<Home />} />
-        <Route path="/adminLogin" element={<AdminLogin />} />
+        {/* Public Routes */}
+        <Route path="/" element={<><NavBar/><Home /><Footer /></>} />
         <Route path="/login" element={<Login />} />
-        <Route path="/footer" element={<Footer />} />
         <Route path="/userRegister" element={<Register />} />
+        
+        {/* Job Seeker Routes */}
+        <Route path="/userLoginLayout" element={<ProtectedRoute role="seeker" />}>
+           <Route path="jobList" element={<><NavBar/><JobList /><Footer /></>} />
+           <Route path="myApplication" element={<><MyApplications /><Footer /></>} />
+           <Route path="savedJobs" element={<><SavedJobs /><Footer /></>} />
+        </Route>
+
+        {/* Employer Routes */}
+        <Route path="/employerLayout" element={<ProtectedRoute role="employer" />}>
+           <Route path="dashboard" element={<EmployerDashboard />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="/adminLayout" element={<ProtectedRoute role="admin" />}>
+           <Route path="adminDashboard" element={<AdminDashboard />} />
+        </Route>
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
   );

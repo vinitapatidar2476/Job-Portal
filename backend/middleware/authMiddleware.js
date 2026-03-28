@@ -1,25 +1,30 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.header("Authorization");
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res
-      .status(401)
-      .json({ message: "Access Denied. No token provided." });
+const protect = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret");
+      req.user = await User.findById(decoded.id).select("-password");
+      next();
+    } catch (error) {
+       return res.status(401).json({ message: "Not authorized" });
+    }
   }
 
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const decoded = jwt.verify(token, "secret-12345");
-
-    req.user = decoded;
-
-    next();
-  } catch (err) {
-    res.status(400).json({ message: "Invalid token" });
-  }
+  if (!token) return res.status(401).json({ message: "No token, authorization denied" });
 };
 
-module.exports = authMiddleware;
+const authorize = (role) => {
+  return (req, res, next) => {
+    if (req.user && req.user.role === role) {
+      next();
+    } else {
+      res.status(403).json({ message: "Forbidden: Not authorized" });
+    }
+  };
+};
+
+module.exports = { protect, authorize };

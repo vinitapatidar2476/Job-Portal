@@ -1,49 +1,32 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Spinner,
-  Alert,
-} from "react-bootstrap";
+import { Bookmark, MapPin, Building, DollarSign, Trash2, Home, ChevronRight } from "lucide-react";
+import API from "../Api";
+import { NavBar } from "../NavBar";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SavedJobs = () => {
   const [savedJobs, setSavedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchSavedJobs = async () => {
-    const token = localStorage.getItem("token");
     try {
-      const res = await axios.get("http://localhost:5000/api/saved-jobs/my", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setSavedJobs(res.data.savedJobs);
+      const { data } = await API.get("/saved-jobs/my");
+      setSavedJobs(data.savedJobs);
     } catch (error) {
-      console.error("Error fetching saved jobs:", error);
+      toast.error("Error fetching saved jobs");
     } finally {
       setLoading(false);
     }
   };
 
   const handleUnsave = async (jobId) => {
-    const token = localStorage.getItem("token");
     try {
-      await axios.delete(
-        `http://localhost:5000/api/saved-jobs/unsave/${jobId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setSavedJobs((prev) => prev.filter((job) => job.job?._id !== jobId));
+      await API.delete(`/saved-jobs/unsave/${jobId}`);
+      setSavedJobs((prev) => prev.filter((item) => item.job?._id !== jobId));
+      toast.success("Job removed from saved list");
     } catch (err) {
-      alert("Error unsaving job");
+      toast.error("Error unsaving job");
     }
   };
 
@@ -52,49 +35,60 @@ const SavedJobs = () => {
   }, []);
 
   return (
-    <Container className="mt-5">
-      <h2 className="text-center mb-4">Saved Jobs</h2>
-
-      {loading ? (
-        <div className="text-center">
-          <Spinner animation="border" />
+    <div className="bg-light min-vh-100">
+      <NavBar />
+      <ToastContainer autoClose={2000} />
+      <div className="container py-5">
+        <div className="row justify-content-center mb-5">
+            <div className="col-12 text-center">
+                <div className="premium-gradient d-inline-flex p-3 rounded-4 shadow-lg mb-3">
+                    <Bookmark size={28} color="white" />
+                </div>
+                <h2 className="dashboard-title fs-1 fw-800">My Collections</h2>
+                <p className="text-muted fw-semibold">Manage all your bookmarked roles in one place.</p>
+            </div>
         </div>
-      ) : savedJobs.length === 0 ? (
-        <Alert variant="info" className="text-center">
-          No saved jobs found.
-        </Alert>
-      ) : (
-        <Row>
-          {savedJobs
-            .filter((item) => item.job) // ✅ only render if job is not null
-            .map((item) => (
-              <Col md={6} lg={4} key={item._id} className="mb-4">
-                <Card className="shadow-sm h-100">
-                  <Card.Body>
-                    <Card.Title>{item.job.title || "Untitled Job"}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {item.job.company || "N/A"}
-                    </Card.Subtitle>
-                    <Card.Text>
-                      <strong>Location:</strong> {item.job.location || "N/A"}
-                      <br />
-                      <strong>Type:</strong> {item.job.jobType || "N/A"}
-                      <br />
-                      <strong>Salary:</strong> ₹{item.job.salary || "N/A"}
-                    </Card.Text>
-                    <Button
-                      variant="outline-danger"
-                      onClick={() => handleUnsave(item.job._id)}
-                    >
-                      ❌ Unsave
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-        </Row>
-      )}
-    </Container>
+
+        {loading ? (
+          <div className="text-center py-5"><div className="spinner-border text-primary" role="status"></div></div>
+        ) : savedJobs.length === 0 ? (
+          <div className="text-center py-5 premium-card bg-white mx-auto col-lg-8 shadow-sm">
+            <p className="text-muted fs-5 mb-4">Your collection is empty.</p>
+            <a href="/userLoginLayout/jobList" className="btn btn-premium px-5 py-3">Browse Latest Jobs</a>
+          </div>
+        ) : (
+          <div className="row g-4">
+            {savedJobs
+              .filter((item) => item.job)
+              .map((item) => (
+                <div key={item._id} className="col-lg-10 mx-auto">
+                    <div className="premium-card p-4 d-md-flex align-items-center justify-content-between gap-4">
+                        <div className="d-flex align-items-center gap-4 flex-grow-1">
+                            <div className="bg-primary-subtle p-3 rounded-4 d-flex align-items-center justify-content-center" style={{width: 60, height: 60}}>
+                                <Building className="text-primary" size={28} />
+                            </div>
+                            <div className="flex-grow-1">
+                                <h5 className="fw-bold fs-4 mb-1">{item.job.title}</h5>
+                                <p className="text-dark fw-bold mb-2 small"><Building className="text-primary me-2" size={14} />{item.job.company}</p>
+                                <div className="d-flex flex-wrap align-items-center gap-4 text-muted small mt-3">
+                                    <span className="d-inline-flex align-items-center gap-1 fw-bold"><MapPin size={14} className="text-primary"/> {item.job.location}</span>
+                                    <span className="d-inline-flex align-items-center gap-1 fw-bold"><DollarSign size={14} className="text-primary"/> {item.job.salary}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="mt-4 mt-md-0 d-flex gap-2">
+                             <button className="btn btn-outline-danger p-3 rounded-3" onClick={() => handleUnsave(item.job._id)} title="Remove Bookmark">
+                                <Trash2 size={20} />
+                             </button>
+                             <a href="/userLoginLayout/jobList" className="btn btn-primary px-4 py-3 rounded-3 fw-bold d-flex align-items-center gap-2">View Job <ChevronRight size={18} /></a>
+                        </div>
+                    </div>
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

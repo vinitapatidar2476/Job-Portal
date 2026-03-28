@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://vinitapatel2476v_db_user:vinita@cluster0.pb5foqr.mongodb.net/jobportal?retryWrites=true&w=majority"
+      process.env.MONGODB_URI || "mongodb://localhost:27017/job-portal"
     );
     console.log("database connect successfully !");
   } catch (err) {
