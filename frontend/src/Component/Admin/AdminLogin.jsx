@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Card } from "react-bootstrap";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import API from "../Api";
 
 export const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -11,13 +10,12 @@ export const AdminLogin = () => {
     event.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/admin/login",
+      const res = await API.post(
+        "/admin/login",
         {
           email,
           password,
-        },
-        { headers: { "Content-Type": "application/json" } }
+        }
       );
       localStorage.setItem("secret-12345", res.data.token);
       console.log(res.data.token);

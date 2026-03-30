@@ -20,15 +20,40 @@ const registerUser = async (req, res) => {
 // Login
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ message: "Invalid email or password" });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: "Invalid email or password" });
-    const token = generateToken(user._id);
-    res.json({ message: "Login successful", user: { _id: user._id, name: user.name, email: user.email, role: user.role }, token });
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const token = generateToken(user._id.toString());
+    
+    res.json({ 
+      message: "Login successful", 
+      user: { 
+        _id: user._id, 
+        name: user.name, 
+        email: user.email, 
+        role: user.role 
+      }, 
+      token 
+    });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("LOGIN ERROR:", err);
+    res.status(500).json({ 
+      message: "Internal server error", 
+      error: err.message 
+    });
   }
 };
 
