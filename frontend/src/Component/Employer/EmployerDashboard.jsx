@@ -20,6 +20,7 @@ export const EmployerDashboard = () => {
       navigate("/");
     }
     fetchJobs();
+    fetchAllApplicants(false); // Fetch silently on mount
   }, []);
 
   const fetchJobs = async () => {
@@ -34,8 +35,8 @@ export const EmployerDashboard = () => {
     }
   };
 
-  const fetchAllApplicants = async () => {
-    setActiveTab("applicants");
+  const fetchAllApplicants = async (showTab = true) => {
+    if (showTab) setActiveTab("applicants");
     setSelectedJob(null);
     setLoading(true);
     try {
@@ -70,7 +71,7 @@ export const EmployerDashboard = () => {
       if (selectedJob) {
         fetchApplicants(selectedJob);
       } else {
-        fetchAllApplicants();
+        fetchAllApplicants(false);
       }
     } catch (error) {
       toast.error("Status update failed");
@@ -123,7 +124,7 @@ export const EmployerDashboard = () => {
                 <div className="premium-card p-4 border-start border-primary border-5">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div className="bg-primary-subtle p-3 rounded-4"><Briefcase className="text-primary" size={24} /></div>
-                    <span className="badge-status status-approved">+12% vs last month</span>
+                    <span className="badge-status status-approved">Live</span>
                   </div>
                   <h3 className="fw-800 fs-1 mb-1">{jobs.length}</h3>
                   <p className="text-muted fw-bold small text-uppercase mb-0">Total Active Jobs</p>
@@ -133,9 +134,9 @@ export const EmployerDashboard = () => {
                 <div className="premium-card p-4 border-start border-accent border-5" style={{ borderColor: '#7c3aed !important' }}>
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div className="bg-purple-subtle p-3 rounded-4" style={{ backgroundColor: '#f3e8ff' }}><Users className="text-purple" size={24} color="#7c3aed" /></div>
-                    <span className="badge-status status-approved">+45% vs last month</span>
+                    <span className="badge-status status-approved">Response</span>
                   </div>
-                  <h3 className="fw-800 fs-1 mb-1">482</h3>
+                  <h3 className="fw-800 fs-1 mb-1">{applicants.length}</h3>
                   <p className="text-muted fw-bold small text-uppercase mb-0">Total Applications</p>
                 </div>
               </div>
@@ -143,10 +144,10 @@ export const EmployerDashboard = () => {
                 <div className="premium-card p-4 border-start border-success border-5">
                   <div className="d-flex justify-content-between align-items-start mb-3">
                     <div className="bg-success-subtle p-3 rounded-4"><BarChart3 className="text-success" size={24} /></div>
-                    <span className="badge-status status-approved">8.2% Reach</span>
+                    <span className="badge-status status-approved">Shortlisted</span>
                   </div>
-                  <h3 className="fw-800 fs-1 mb-1">2.4k</h3>
-                  <p className="text-muted fw-bold small text-uppercase mb-0">Job Views</p>
+                  <h3 className="fw-800 fs-1 mb-1">{applicants.filter(a => a.status === 'accepted').length}</h3>
+                  <p className="text-muted fw-bold small text-uppercase mb-0">Hired Candidates</p>
                 </div>
               </div>
               <div className="col-12 mt-5">
@@ -157,14 +158,17 @@ export const EmployerDashboard = () => {
                       <tr><th className="border-0 px-4">Recruiter Activity</th><th className="border-0">Job Title</th><th className="border-0">Applicants</th><th className="border-0">Action</th></tr>
                     </thead>
                     <tbody>
-                      {jobs.slice(0, 5).map(job => (
-                        <tr key={job._id}>
-                          <td className="px-4 py-3"><div className="d-flex align-items-center gap-3"><div className="bg-light p-2 rounded-circle"><Clock size={16} /></div><span className="small text-muted">2 hours ago</span></div></td>
-                          <td className="fw-bold">{job.title}</td>
-                          <td><span className="badge-status status-approved">24 New</span></td>
-                          <td><button className="btn btn-outline-primary btn-sm rounded-pill px-3" onClick={() => fetchApplicants(job._id)}>Manage</button></td>
-                        </tr>
-                      ))}
+                      {jobs.slice(0, 5).map(job => {
+                        const jobAppCount = applicants.filter(a => a.jobId?._id === job._id).length;
+                        return (
+                          <tr key={job._id}>
+                            <td className="px-4 py-3"><div className="d-flex align-items-center gap-3"><div className="bg-light p-2 rounded-circle"><Clock size={16} /></div><span className="small text-muted">{new Date(job.createdAt).toLocaleDateString()}</span></div></td>
+                            <td className="fw-bold">{job.title}</td>
+                            <td><span className="badge-status status-approved">{jobAppCount} Applied</span></td>
+                            <td><button className="btn btn-outline-primary btn-sm rounded-pill px-3" onClick={() => fetchApplicants(job._id)}>Manage</button></td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -184,8 +188,8 @@ export const EmployerDashboard = () => {
                     <h5 className="fw-bold fs-4 mb-2">{job.title}</h5>
                     <p className="text-muted small mb-4">{job.location} • {job.jobType}</p>
                     <div className="row g-2 mb-4">
-                      <div className="col-6"><div className="bg-light p-2 rounded-3 text-center small"><span className="d-block fw-bold fs-5">0</span>Views</div></div>
-                      <div className="col-6"><div className="bg-light p-2 rounded-3 text-center small"><span className="d-block fw-bold fs-5" style={{ color: '#7c3aed' }}>12</span>Apply</div></div>
+                      <div className="col-6"><div className="bg-light p-2 rounded-3 text-center small"><span className="d-block fw-bold fs-5">{new Date(job.createdAt).toLocaleDateString()}</span>Posted</div></div>
+                      <div className="col-6"><div className="bg-light p-2 rounded-3 text-center small"><span className="d-block fw-bold fs-5" style={{ color: '#7c3aed' }}>{applicants.filter(a => a.jobId?._id === job._id).length}</span>Apply</div></div>
                     </div>
                     <button className="btn btn-primary w-100 rounded-3 py-2 fw-bold d-flex align-items-center justify-content-center gap-2" onClick={() => fetchApplicants(job._id)}>View Applicants <ChevronRight size={18} /></button>
                   </div>
